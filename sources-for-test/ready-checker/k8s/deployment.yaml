@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ready-checker
+spec:
+  replicas: 15
+  selector:
+    matchLabels:
+      app: ready-checker
+  template:
+    metadata:
+      labels:
+        app: ready-checker
+    spec:
+      containers:
+        - name: ready-checker
+          image: ready-checker:latest
+          imagePullPolicy: Never
+          livenessProbe:
+            httpGet:
+              path: /slow-ready
+              # path: /healthz
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 6

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memory-consumer
+spec:
+  replicas: 12
+  selector:
+    matchLabels:
+      app: memory-consumer
+  template:
+    metadata:
+      labels:
+        app: memory-consumer
+    spec:
+      containers:
+        - name: memory-consumer
+          image: memory-consumer:latest
+          imagePullPolicy: Never
+          env:
+            - name: MEMORY_MB
+              value: "1512"
+            - name: DELAY_SEC
+              value: "1"
+          resources:
+            limits:
+              memory: "3Gi"
+            requests:
+              memory: "2Gi"
